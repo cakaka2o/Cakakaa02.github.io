@@ -1,28 +1,12 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cifrador Cesar</title>
-    <link href="index.css" rel="stylesheet" />
-    <script src="index.js" type="text/javascript" defer></script>
-</head>
-<body>
-    <main>
-        <h1>Cifrador Cesar.</h1>
-        <form id="cifrador" autocomplete="off" onsubmit="return false;">
-            <input id="input-original" spellcheck="false" placeholder="Ingrese el texto" type="text" name="text">
-            <div class="controls">
-              <button id="btn-encrypt" type="button">Encriptar</button>
-              <button id="btn-decrypt" type="button">Desencriptar</button>
-            </div>
-        </form>
-        <div id="resultado" aria-live="polite"></div>
-        <div class="rango">
-            <input id="rango" type="range" value="10" min="1" max="20" oninput="this.nextElementSibling.value = this.value">
-            <output>10</output>
-        </div>
-    </main>
-</body>
-</html>
+<!doctype html>
+<html lang="es">
+<head><meta charset="utf-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/><title>Cifrado César — Corregido Ñ</title>
+<link rel="stylesheet" href="styles.css"/></head><body>
+<main class="card"><h1>Cifrado César — Corregido Ñ</h1>
+<label>Idioma: <select id="langSelect"><option value="es">Español</option><option value="en">English</option></select></label>
+<label>Shift: <input id="shift" type="number" value="1" /></label>
+<label>Entrada:<textarea id="inputText" rows="3">Hola que tal me preguntaba, te gustaría ser mi amigo?</textarea></label>
+<div><button id="encryptBtn">Encriptar</button> <button id="decryptBtn">Desencriptar</button> <button id="copyBtn">Copiar</button></div>
+<label>Resultado:<textarea id="outputText" rows="3" readonly></textarea></label>
+<details><summary>Tests y log</summary><pre id="testLog"></pre></details>
+<script src="script.js"></script></main></body></html>
