@@ -1,12 +1,54 @@
 <!doctype html>
 <html lang="es">
-<head><meta charset="utf-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/><title>Cifrado César — Corregido Ñ</title>
-<link rel="stylesheet" href="styles.css"/></head><body>
-<main class="card"><h1>Cifrado César — Corregido Ñ</h1>
-<label>Idioma: <select id="langSelect"><option value="es">Español</option><option value="en">English</option></select></label>
-<label>Shift: <input id="shift" type="number" value="1" /></label>
-<label>Entrada:<textarea id="inputText" rows="3">Hola que tal me preguntaba, te gustaría ser mi amigo?</textarea></label>
-<div><button id="encryptBtn">Encriptar</button> <button id="decryptBtn">Desencriptar</button> <button id="copyBtn">Copiar</button></div>
-<label>Resultado:<textarea id="outputText" rows="3" readonly></textarea></label>
-<details><summary>Tests y log</summary><pre id="testLog"></pre></details>
-<script src="script.js"></script></main></body></html>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <base href="./">
+  <title>Cifrado César — GitHub Pages Ready</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <main class="card" role="main" aria-labelledby="title">
+    <header class="header">
+      <h1 id="title">Cifrado César</h1>
+      <div class="lang-wrap">
+        <label for="langSelect">Idioma</label>
+        <select id="langSelect" aria-label="Idioma">
+          <option value="es">Español</option>
+          <option value="en">English</option>
+        </select>
+      </div>
+    </header>
+
+    <p class="lead">Cifrado y descifrado César. Compatible con Ñ, acentos y ligaduras. Listo para GitHub Pages.</p>
+
+    <div class="controls-row">
+      <label for="shift">Desplazamiento (shift)</label>
+      <input id="shift" type="number" value="3" min="-1000" max="1000" />
+    </div>
+
+    <label for="inputText">Texto de entrada</label>
+    <textarea id="inputText" rows="4" placeholder="Escribe o pega tu texto...">Hola que tal me preguntaba, te gustaría ser mi amigo?</textarea>
+
+    <div class="controls">
+      <button id="encryptBtn">Encriptar</button>
+      <button id="decryptBtn">Desencriptar</button>
+      <button id="copyBtn">Copiar resultado</button>
+      <button id="downloadBtn">Descargar (.txt)</button>
+    </div>
+
+    <label for="outputText">Resultado</label>
+    <textarea id="outputText" rows="4" readonly placeholder="Aquí aparecerá el resultado"></textarea>
+
+    <details>
+      <summary>Normalización y tests</summary>
+      <pre id="normalizationPreview" class="preview" aria-live="polite"></pre>
+      <pre id="testLog" class="preview" aria-live="polite"></pre>
+    </details>
+
+    <footer class="footer">Sube estos archivos al repo y el workflow automático desplegará en GitHub Pages.</footer>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
