@@ -1,76 +1,67 @@
-# caesar_tool.py - fast CLI for Caesar cipher (supports Spanish Ñ, diacritics and ligatures)
-import argparse, unicodedata, sys
-
-ALPHABET_UPPER = ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','Ñ','O','P','Q','R','S','T','U','V','W','X','Y','Z']
-ALPHABET_LOWER = [c.lower() for c in ALPHABET_UPPER]
-INDEX_MAP = {c:i for i,c in enumerate(ALPHABET_LOWER)}
+# caesar_cli.py - fixes to preserve ñ in normalization
+import argparse, unicodedata
+ALPHABETS = {
+    'es': ('A B C D E F G H I J K L M N Ñ O P Q R S T U V W X Y Z'.split(' '),
+           'a b c d e f g h i j k l m n ñ o p q r s t u v w x y z'.split(' ')),
+    'en': ('A B C D E F G H I J K L M N O P Q R S T U V W X Y Z'.split(' '),
+           'a b c d e f g h i j k l m n o p q r s t u v w x y z'.split(' '))
+}
 LIGATURES = {'Æ':'AE','æ':'ae','Œ':'OE','œ':'oe','ß':'ss'}
 
-def expand_ligature(ch):
-    return LIGATURES.get(ch, ch)
-
-def strip_diacritics(ch):
+def expand_lig(ch): return LIGATURES.get(ch,ch)
+def strip_diac(ch):
     nf = unicodedata.normalize('NFD', ch)
+    # preserve ñ if base n + combining tilde present
+    if len(nf) >= 2 and nf[0].lower() == 'n' and '\u0303' in nf:
+        return 'Ñ' if nf[0].isupper() else 'ñ'
     return ''.join(c for c in nf if unicodedata.category(c) != 'Mn')
 
-def normalize_char_seq(ch):
-    expanded = expand_ligature(ch)
-    return ''.join(strip_diacritics(c) for c in expanded)
+def norm_seq(ch):
+    expanded = expand_lig(ch)
+    return ''.join(strip_diac(c) for c in expanded)
 
-def shift_index(base_lower, shift):
-    idx = INDEX_MAP.get(base_lower)
-    if idx is None:
-        return None
-    n = (idx + shift) % len(ALPHABET_LOWER)
-    return n
+def build_map(lang):
+    upper, lower = ALPHABETS[lang]
+    lower_map = {c:i for i,c in enumerate(lower)}
+    return lower_map, upper, lower, len(lower)
 
-def transform(text, shift):
-    out_chars = []
-    # cache per unique char
+def transform(text, shift, lang):
+    lower_map, upper_arr, lower_arr, length = build_map(lang)
+    out = []
     cache = {}
     for ch in text:
         if ch in cache:
-            out_chars.append(cache[ch])
-            continue
-        seq = normalize_char_seq(ch)
+            out.append(cache[ch]); continue
+        seq = norm_seq(ch)
         if not seq:
-            cache[ch] = ch
-            out_chars.append(ch)
-            continue
+            cache[ch] = ch; out.append(ch); continue
         is_upper = ch.upper() == ch and ch.lower() != ch
         part = []
         for base in seq:
-            base_lower = base.lower()
-            idx = shift_index(base_lower, shift)
+            idx = lower_map.get(base.lower())
             if idx is None:
                 part.append(base.upper() if is_upper else base)
             else:
-                part.append(ALPHABET_UPPER[idx] if is_upper else ALPHABET_LOWER[idx])
-        part_str = ''.join(part)
-        cache[ch] = part_str
-        out_chars.append(part_str)
-    return ''.join(out_chars)
+                r = (idx + shift) % length
+                if r < 0: r += length
+                part.append(upper_arr[r] if is_upper else lower_arr[r])
+        s = ''.join(part)
+        cache[ch] = s
+        out.append(s)
+    return ''.join(out)
 
 def main():
-    parser = argparse.ArgumentParser(description='Caesar cipher CLI (fast)')
+    parser = argparse.ArgumentParser(description='Caesar CLI with ñ fix')
     group = parser.add_mutually_exclusive_group(required=True)
-    group.add_argument('-e','--encrypt', help='Text to encrypt', type=str)
-    group.add_argument('-d','--decrypt', help='Text to decrypt', type=str)
-    parser.add_argument('-s','--shift', help='Shift amount', type=int, default=3)
-    parser.add_argument('-o','--output', help='Save result to file', type=str)
+    group.add_argument('-e','--encrypt', type=str)
+    group.add_argument('-d','--decrypt', type=str)
+    parser.add_argument('-s','--shift', type=int, default=3)
+    parser.add_argument('-l','--lang', choices=['es','en'], default='es')
     args = parser.parse_args()
-
     if args.encrypt:
-        res = transform(args.encrypt, args.shift)
+        print(transform(args.encrypt, args.shift, args.lang))
     else:
-        res = transform(args.decrypt, -args.shift)
-
-    if args.output:
-        with open(args.output, 'w', encoding='utf-8') as f:
-            f.write(res)
-        print('Saved to', args.output)
-    else:
-        print(res)
+        print(transform(args.decrypt, -args.shift, args.lang))
 
 if __name__ == '__main__':
     main()
