@@ -56,21 +56,6 @@
       "lang": "es"
     },
     {
-      "input": "lolo",
-      "shift": 1,
-      "lang": "es"
-    },
-    {
-      "input": "lulu",
-      "shift": 1,
-      "lang": "es"
-    },
-    {
-      "input": "Hola hole holi hola holo holp",
-      "shift": 1,
-      "lang": "es"
-    },
-    {
       "input": "Ipmb rvf ubm nf qsfhvñubcb, uf hvtubsjb tfs nj bnjhp?",
       "shift": -1,
       "lang": "es"
@@ -166,38 +151,53 @@
       "lang": "es"
     },
     {
-      "input": "mañana noche día",
+      "input": "Árboles y niños",
       "shift": 9,
       "lang": "es"
     },
     {
-      "input": "pingüinos y águilas",
+      "input": "Über",
       "shift": 10,
       "lang": "es"
     },
     {
-      "input": "límite",
+      "input": "Straße",
       "shift": 1,
       "lang": "es"
     },
     {
-      "input": "crème brûlée",
+      "input": "Æther",
       "shift": 2,
       "lang": "es"
     },
     {
-      "input": "coöperate",
+      "input": "œuvre",
       "shift": 3,
       "lang": "es"
     },
     {
-      "input": "São Paulo",
+      "input": "ßeta",
       "shift": 4,
       "lang": "es"
     },
     {
-      "input": "Árboles y niños",
+      "input": "ñoño",
       "shift": 5,
+      "lang": "es"
+    },
+    {
+      "input": "aáeéiíoóuúü",
+      "shift": 6,
+      "lang": "es"
+    },
+    {
+      "input": "ABCDEFGHIJKLMNOPQRSTUVWXYZ",
+      "shift": 7,
+      "lang": "es"
+    },
+    {
+      "input": "abcdefghijklmnopqrstuvwxyz",
+      "shift": 8,
       "lang": "es"
     }
   ]
