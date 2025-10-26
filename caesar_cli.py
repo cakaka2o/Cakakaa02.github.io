@@ -1,4 +1,4 @@
-# caesar_cli.py - fixes to preserve ñ in normalization
+# caesar_cli.py - GitHub Pages ready normalization (preserve ñ)
 import argparse, unicodedata
 ALPHABETS = {
     'es': ('A B C D E F G H I J K L M N Ñ O P Q R S T U V W X Y Z'.split(' '),
@@ -11,7 +11,6 @@ LIGATURES = {'Æ':'AE','æ':'ae','Œ':'OE','œ':'oe','ß':'ss'}
 def expand_lig(ch): return LIGATURES.get(ch,ch)
 def strip_diac(ch):
     nf = unicodedata.normalize('NFD', ch)
-    # preserve ñ if base n + combining tilde present
     if len(nf) >= 2 and nf[0].lower() == 'n' and '\u0303' in nf:
         return 'Ñ' if nf[0].isupper() else 'ñ'
     return ''.join(c for c in nf if unicodedata.category(c) != 'Mn')
@@ -51,12 +50,12 @@ def transform(text, shift, lang):
     return ''.join(out)
 
 def main():
-    parser = argparse.ArgumentParser(description='Caesar CLI with ñ fix')
+    parser = argparse.ArgumentParser(description='Caesar CLI (GitHub Pages ready)')
     group = parser.add_mutually_exclusive_group(required=True)
-    group.add_argument('-e','--encrypt', type=str)
-    group.add_argument('-d','--decrypt', type=str)
-    parser.add_argument('-s','--shift', type=int, default=3)
-    parser.add_argument('-l','--lang', choices=['es','en'], default='es')
+    group.add_argument('-e','--encrypt', help='Text to encrypt', type=str)
+    group.add_argument('-d','--decrypt', help='Text to decrypt', type=str)
+    parser.add_argument('-s','--shift', help='Shift amount', type=int, default=3)
+    parser.add_argument('-l','--lang', help='Language (es|en)', choices=['es','en'], default='es')
     args = parser.parse_args()
     if args.encrypt:
         print(transform(args.encrypt, args.shift, args.lang))
